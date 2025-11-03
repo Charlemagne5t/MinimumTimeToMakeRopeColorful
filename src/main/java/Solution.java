@@ -1,16 +1,21 @@
-public class Solution {
+class Solution {
     public int minCost(String colors, int[] neededTime) {
-        char[] col = colors.toCharArray();
-        int cost = 0;
-
-        for (int i = 1; i < col.length; i++){
-            if(col[i] == col[i - 1]){
-                cost += Math.min( neededTime[i], neededTime[i - 1]);
-                neededTime[i] = Math.max(neededTime[i], neededTime[i - 1]);
-                col[i - 1] = '*';
+        char prev = colors.charAt(0);
+        int res = neededTime[0];
+        int curMax = neededTime[0];
+        for(int i = 1; i < colors.length(); i++) {
+            char ch = colors.charAt(i);
+            res += neededTime[i];
+            if(prev == ch) {
+                curMax = Math.max(curMax, neededTime[i]);
+            }else {
+                res-= curMax;
+                curMax = neededTime[i];
+                prev = ch;
             }
         }
+        res -= curMax;
 
-        return cost;
+        return res;
     }
 }
